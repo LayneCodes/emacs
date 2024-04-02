@@ -12,8 +12,8 @@
 ;; Define the syntax highlighting rules
 (defvar generic-highlighting-font-lock-keywords
   `(
-    ;; Highlight comments (anything after #)
-    ("#.*" . font-lock-comment-face)
+    ;; Highlight comments (anything after #, anywhere in the line)
+    ("\\(#.*\\)" . font-lock-comment-face)
     ;; Highlight strings (anything between single or double quotes)
     ("\\(\"[^\"]*\"\\|'[^']*'\\)" . font-lock-string-face)
     ;; Highlight keys (anything before a colon)

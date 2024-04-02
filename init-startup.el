@@ -5,8 +5,18 @@
 
 ;;; Code:
 
+(defun select-whole-buffer ()
+  "Select the whole buffer."
+  (interactive)
+  (goto-char (point-min)) ; 移动到缓冲区的开始
+  (push-mark (point-max)) ; 在缓冲区的末尾放置一个标记
+  (setq mark-active t))   ; 激活标记，以便选中文本
 
 ;; Settings for system encoding
+;来保存你的工作环境，包括窗口布局和大小
+(desktop-save-mode 1)
+;; 将select-whole-buffer函数绑定到 C-c b
+(global-set-key (kbd "C-c b") 'select-whole-buffer)
 (prefer-coding-system 'utf-8)
 (setq locale-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)

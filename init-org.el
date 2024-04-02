@@ -1,5 +1,6 @@
 ;;; init-org.el --- 
 ;;;Zettelkasten 笔记法配置
+
 (use-package org-roam
    :ensure t
    :after org
@@ -128,6 +129,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
            ("TODO" ("WAITING") ("CANCELLED"))
            ("NEXT" ("WAITING") ("CANCELLED"))
            ("DONE" ("WAITING") ("CANCELLED")))))
+  ;(setq org-todo-state-tags-triggers nil)
   (org-adapt-indentation t)
   (org-agenda-files pv/org-agenda-files)
   ;; Do not dim blocked tasks
@@ -188,6 +190,8 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
 (use-package org
   :custom
+  (org-export-with-sub-superscripts nil)
+  (org-use-sub-superscripts nil);禁用下划线的下标显示
   ;; ...
   (org-capture-templates
    (quote (("t" "todo" entry (file pv/org-refile-file)
@@ -207,13 +211,23 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     ;; Allow refile to create parent tasks with confirmation
   (org-refile-allow-creating-parent-nodes (quote confirm))
   (org-cite-global-bibliography pv/org-bibtex-files)
+  
+  (defun my/org-mode-setup ()
+    (require 'evil)
+    (add-hook 'org-read-date-minibuffer-local-map (lambda ()
+        (define-key evil-motion-state-local-map (kbd "<return>") nil))))
+
+  (add-hook 'org-mode-hook #'my/org-mode-setup)
   :bind
   ;; ...
   (("C-c a" . 'org-agenda)
    ("C-c c" . 'org-capture)
    :map org-mode-map
    ("C-c C-q" . counsel-org-tag)))
-   
+
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "TAB") 'org-cycle))
+
 (provide 'init-org)
 ;;; init-org.el ends here
 
