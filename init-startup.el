@@ -48,7 +48,18 @@
 
 ;;font sizes
 (set-face-attribute 'default nil :height 130)
+(defun set-fonts ()
+  "Set fonts for English and Chinese characters."
+  ;; Set English font
+  (set-face-attribute 'default nil :font "Monaco 14")
+  ;; Specify font for Chinese characters
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font (frame-parameter nil 'font)
+                      charset
+                      (font-spec :family "STFangsong" :size 16))))
 
+;; Call the function to set the fonts
+(set-fonts)
 ;;set the place of the windows
 ;;(set-frame-position (selected-frame) 100 50)
 ;;set the size of the windows

@@ -42,16 +42,16 @@
 ;; 确保Emacs状态下的键绑定不受影响
 (evil-set-initial-state 'emacs-lisp-mode 'emacs)
 (defun my/org-tab-behavior ()
-  "在Org模式中，根据光标位置调整heading级别或缩进。"
+  "根据光标位置调整 Org 模式中的行为：标题折叠、表格移动或缩进。"
   (interactive)
   (if (org-at-heading-p)
       (org-cycle)
-    (indent-for-tab-command)))
+    (if (org-at-table-p)
+        (org-table-next-field)
+      (indent-for-tab-command))))
 
 (with-eval-after-load 'evil
   (define-key evil-insert-state-map (kbd "TAB") 'my/org-tab-behavior)
   (define-key evil-insert-state-map [tab] 'my/org-tab-behavior))
 (provide 'init-evil)
 ;;; init-evil.el ends here
-
-

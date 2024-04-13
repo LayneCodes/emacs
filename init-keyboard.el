@@ -7,7 +7,7 @@
 
 (global-set-key (kbd "M-w") 'kill-region)              ; change M-w and C-w，M-w is copy
 (global-set-key (kbd "C-w") 'kill-ring-save)           ; change M-w and C-w，C-w is cut
-(global-set-key (kbd "C-z") 'undo)                     ; C-z undo
+
 ;; 自定义两个函数
 ;; Faster move cursor
 (defun next-ten-lines()

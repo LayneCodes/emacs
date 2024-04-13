@@ -63,7 +63,8 @@ it can be passed in POS."
    :hook
    (before-save . pv/org-set-last-modified) ; 保存文件时调用
    :custom
-   (org-roam-directory (concat org-directory "Notes/"))  ; 设置 org-roam 目录
+   (org-roam-directory (concat org-directory "roam/"))  ; 设置 org-roam 目录
+
    ;; 自定义默认模板
    (org-roam-capture-templates
     '(("d" "default" plain "%?"
@@ -210,7 +211,6 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   (org-refile-use-outline-path 'file)
     ;; Allow refile to create parent tasks with confirmation
   (org-refile-allow-creating-parent-nodes (quote confirm))
-  (org-cite-global-bibliography pv/org-bibtex-files)
   
   (defun my/org-mode-setup ()
     (require 'evil)
@@ -224,10 +224,34 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
    ("C-c c" . 'org-capture)
    :map org-mode-map
    ("C-c C-q" . counsel-org-tag)))
+;; 设置org-archive 归档按照日期存档,如果父任务未完成,则子任务不归档
+(setq org-archive-location (concat org-directory "archive/%s_archive::datetree/"))
 
+(defun my/org-archive-done-tasks ()
+  "Archive all tasks that are marked as DONE and have no undone children."
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (unless (my/org-has-undone-children-p)
+       (org-archive-subtree)
+       (setq org-map-continue-from (outline-previous-heading))))
+   "/DONE" 'tree))
+
+(defun my/org-has-undone-children-p ()
+  "Check if the current heading has children that are not DONE."
+  (save-excursion
+    (let ((has-undone-children nil))
+      (org-goto-first-child)
+      (while (and (not has-undone-children) (org-goto-sibling))
+        (unless (member (org-get-todo-state) '("DONE" "CANCELLED"))
+          (setq has-undone-children t)))
+      has-undone-children)))
+
+(defun my/schedule-archive-done-tasks ()
+  "Schedule `my/org-archive-done-tasks` to run every seven days."
+  (run-at-time "00:59" (* 7 24 60 60) 'my/org-archive-done-tasks))
 (with-eval-after-load 'evil
   (define-key evil-normal-state-map (kbd "TAB") 'org-cycle))
 
 (provide 'init-org)
 ;;; init-org.el ends here
-
