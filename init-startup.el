@@ -21,6 +21,21 @@
 (setq locale-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
 
+;; Improve shell mode
+(defun my-shell-mode-setup ()
+  "Customize shell mode for history and command editing."
+  ;; 使用上下箭头键调出历史命令
+  (local-set-key (kbd "<up>") 'comint-previous-input)
+  (local-set-key (kbd "<down>") 'comint-next-input)
+  ;; 禁止编辑命令行历史记录
+  (setq comint-prompt-read-only t))
+
+;; 将上述设置应用于 shell-mode
+(add-hook 'shell-mode-hook 'my-shell-mode-setup)
+
+(provide 'init-shell)
+;;; init-shell.el ends here
+
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
