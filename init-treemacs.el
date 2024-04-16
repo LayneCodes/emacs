@@ -9,5 +9,6 @@
   (:map treemacs-mode-map
 	("/" . treemacs-advanced-helpful-hydra)))
   (require 'treemacs-evil)
+  (evil-define-key 'treemacs treemacs-mode-map (kbd "n") #'treemacs-next-line);将 n 键在 treemacs 的 evil 模式状态下绑定到 treemacs-next-line 函数
 (provide 'init-treemacs)
 ;;; treemacs.el ends here

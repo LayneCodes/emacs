@@ -8,7 +8,8 @@
 (global-auto-complete-mode t)
 ;;添加org-mode模式，在该模式下会自动开启自动完成
 (add-to-list 'ac-modes 'org-mode)
-
+;; 添加shell-mode模式，在该模式下会自动开启自动完成
+(add-to-list 'ac-modes 'shell-mode)
 ;;使用自带字典
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/plugins/auto-complete/dict")
 (ac-config-default)
