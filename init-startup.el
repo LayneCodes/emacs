@@ -94,7 +94,8 @@
 
 ;; 设置大文件警告阈值为 100MB
 (setq large-file-warning-threshold (* 100 1024 1024))
-
+;; 设置鼠标中键进行粘贴时,以光标的位置而不是鼠标的位置进行粘贴
+(setq mouse-yank-at-point t)
 ;; set tab length 4
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
